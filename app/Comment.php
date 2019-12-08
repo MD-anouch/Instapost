@@ -4,17 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Comment extends Model
 {
+
     protected $guarded = [];
+
     public function user(){
 
         return $this->BelongsTo(User::class);
 
     }
-    public function comments(){
+    public function post(){
 
-        return $this->hasMany(Comment::class);
+        return $this->BelongsTo(Post::class);
 
     }
 }

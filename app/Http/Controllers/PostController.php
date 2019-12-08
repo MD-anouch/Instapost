@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
@@ -21,7 +22,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::all()->random()->limit(7)->get();
+        $post = Post::all()->sortBy('created_at');
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+        $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+        // $follows= (auth()->user()) ? auth()->user()->following->contains($post->user->id) : false;
+
+        // dd($posts);
+        return view('post.index', compact('user', 'post', 'users', 'posts'));
     }
 
     /**
@@ -55,7 +63,7 @@ class PostController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $image      = $request->file('image')->store('uploads','public');
-            $imageF = Image::make(public_path("storage/{$image}"))->fit(1200, 1200);
+            $imageF = Image::make(public_path("storage/{$image}"))->resize(1200, 1200);
             $imageF->save();
             // $fileName   = time() . '.' . $image->getClientOriginalExtension();
             // $imageF->save();
@@ -81,7 +89,9 @@ class PostController extends Controller
     public function show($id)
     {
         $post=Post::findOrFail($id);
-        return view('post.show',compact('post'));
+        $comment = Comment::where('post_id', '=', $id)->latest()->paginate(6);
+        $follows= (auth()->user()) ? auth()->user()->following->contains($post->user->id) : false;
+        return view('post.show',compact('post', 'comment', 'follows'));
     }
 
     /**

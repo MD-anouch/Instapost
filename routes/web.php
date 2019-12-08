@@ -11,11 +11,37 @@
 |
 */
 
+// use Symfony\Component\Routing\Route;
+
+// use Illuminate\Routing\Route;
+
+use App\Mail\WelcomeMail;
+use Illuminate\Routing\RouteAction;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/mail', function(){
+    return new WelcomeMail();
+});
+
 Auth::routes();
+
+Route::resource('/profile','ProfileController');
+
+Route::resource('/p','PostController');
+
+Route::resource('/comment','CommentController');
+
+// Route::resource('/follow', 'FollowsController');
+Route::post('followers/{user}', 'FollowsController@store');
+// Route::post('/search','ProfileController@search')->name('search.store');
+Route::get('/search','ProfileController@search')->name('search.store');
+
 
 // Route::get('/profile/{user}', 'ProfileController@show')->name('profile.show');
 // Route::get('/p/create','PostController@create')->name('post.create');
@@ -23,8 +49,6 @@ Auth::routes();
 // Route::post('/p','PostController@store')->name('post.store');
 // Route::get('profile/{user}/edit', 'ProfileController@edit')->name('profile.edit');
 // Route::patch('profile/{user}', 'ProfileController@update')->name('profile.update');
-
-Route::resource('/profile','ProfileController');
-
-Route::resource('/p','PostController');
-
+// Route::post('followers/{user}', function () {
+//     return ['success'];
+// });

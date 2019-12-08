@@ -5,11 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Profile;
 use App\User;
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 
 
 class ProfileController extends Controller
 {
+
+
+    public function search(Request $request){
+
+        $s = $request->get('search');
+        $user = User::where('username','like', '%' . $s . '%')->get();
+        $count = User::where('username','like', '%' . $s . '%')->count();
+        return view('profile.search',compact('user', 'count'));
+
+
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -51,7 +64,26 @@ class ProfileController extends Controller
     public function show($id)
     {
         $user=User::findOrFail($id);
-        return view('profile.index',compact('user'));
+        // $profile=Profile::findOrFail($id);
+        $follows= (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
+        $following = $user->following()->get();
+        $followers = $user->profile->followers()->get();
+
+
+        $postcount = Cache::remember('posts.count'. $user->id, now()->addSeconds(3), function () use ($user) {
+            return $user->posts->count();
+        });;
+
+        $followerscount = Cache::remember('followers.count'. $user->id, now()->addSeconds(3), function () use ($user) {
+            return $user->profile->followers()->count();
+        });;
+
+        $followingcount = Cache::remember('following.count'. $user->id, now()->addSeconds(3), function () use ($user) {
+            return $user->following()->count();
+        });;
+
+        // dd($follows);
+        return view('profile.index',compact('user', 'following', 'followers','follows', 'postcount', 'followerscount', 'followingcount'));
     }
 
     /**
@@ -82,7 +114,7 @@ class ProfileController extends Controller
             'title'=>'required',
             'description'=> 'required',
             'url' => 'required',
-            // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
+            'image' => '',
           ]);
 
 // dd($request);
@@ -96,19 +128,20 @@ class ProfileController extends Controller
           $user->profile->url = $request->get('url');
 
           if ($request->hasFile('image')) {
-            $image      = $request->file('image')->store('profile-image','public');
-            $imageF = Image::make(public_path("storage/{$image}"))->fit(1200, 1200);
+            $image      = $request->file('image')->store('profile','public');
+            $imageF = Image::make(public_path("storage/{$image}"))->fit(1000, 1000);
             $imageF->save();
             // $fileName   = time() . '.' . $image->getClientOriginalExtension();
             // $imageF->save();
             $user->profile->image = $image;
         }
 
-          $user->profile->save();
+         $user->profile->save();
+        //   dd($user->save());
+        //   $user->push();
           $this->authorize('update', $user->profile);
 
-        // or  $user->update();
-        //   $user->push();
+
         // $this->authorize('update', $user->profile);
 
           return redirect('/profile/'.auth()->user()->id)->with('success', 'Stock has been updated');

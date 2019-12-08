@@ -2,7 +2,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <form action="{{ route('profile.update', $user->id) }}"  method="post">
+            <form action="{{ route('profile.update', $user->id) }}" enctype= "multipart/form-data" method="post">
                     @method('PATCH')
                     @csrf
                     <div class="form-group">
