@@ -15,10 +15,15 @@
                 </section>
             <section >
             <a href="/p/{{$post->id}}"><img src="/storage/{{$post->image}}" class=" rounded mx-auto d-block w-100" alt=""></a>
-            <div style="border-bottom:2px black solid;border-left:2px black solid;border-right:2px black solid">
+            <div>
             <p class=" pt-2"><span class="font-weight-bold"><a href="/profile/{{$post->user->id}}"><span class="text-dark">{{ $post->user->username }}</span></a></span> {{ $post->caption }}</p>
             </div>
             </section>
+            {{-- like --}}
+            <div class=" d-flex">
+                <a class="like" href="#">like </a> | <a class="like" href="#"> dislike</a>
+            </div>
+            {{-- end --}}
         </div>
 @endforeach
 </div>
@@ -34,7 +39,6 @@
               <img src="storage/{{$user->profile->profileImage()}}" class=" rounded-circle" style="width:30px" alt="">
               <a href="/profile/{{$user->id}}"><li class="list-group-item text-dark font-weight-bold">{{ $user->username }}</li></a>
             </div>
-
               @endforeach
 
             </ul>
@@ -46,6 +50,8 @@
              {{ $posts->links() }}
             </div>
     </div>
+
+<script src="{{asset('/js/like.js')}}"></script>
 </div>
 
 

@@ -125,6 +125,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return redirect('/profile/'.auth()->user()->id)->with('success', 'The post has been deleted');
     }
 }

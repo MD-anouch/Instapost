@@ -32,7 +32,7 @@
                 <!-- This is the modal -->
                 <div id="modal-example" uk-modal>
 
-                    <div class="uk-modal-dialog uk-modal-body">
+                    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                         <form action="/p" enctype= "multipart/form-data" method="POST">
                         <h2 class="uk-modal-title">Add a new post</h2>
                         {{-- form start --}}
@@ -69,7 +69,7 @@
 
                                             <div class="row  mt-2">
                                                     <div><label for="image">Insert image</label></div>
-                                                <div class="input-group mb-3">
+                                                <div class="input-group mb-3 mt-2">
                                                     <div class="custom-file">
                                                          {{-- <input type="file" name="image" id="image"> --}}
 
@@ -114,7 +114,57 @@
                 @endcan
             </div>
             @can('update', $user->profile)
-            <a href="{{ route('profile.edit',$user->id)}}">Edit profile</a>
+            {{-- modal start --}}
+            {{-- <a href="{{ route('profile.edit',$user->id)}}">Edit profile</a> --}}
+            <!-- This is an anchor toggling the modal -->
+                <a href="#modal-example2" uk-toggle>Edit profile</a>
+
+                <!-- This is the modal -->
+                <div id="modal-example2" uk-modal>
+                    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                        <form action="{{ route('profile.update', $user->id) }}" enctype= "multipart/form-data" method="post">
+                        <h2 class="uk-modal-title">Edit</h2>
+                        {{-- form start --}}
+                        <div class="container">
+                                <div class="row">
+                                            @method('PATCH')
+                                            @csrf
+                                            <div class="form-group pr-5">
+                                              <label for="name">Title</label>
+                                              <input type="text" class="form-control" name="title" value='{{ $user->profile->title }}' />
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="price">Description</label>
+                                              <input type="text" class="form-control" name="description" value='{{ $user->profile->description }}' />
+                                            </div>
+                                            <div class="form-group pr-5">
+                                              <label for="quantity">url</label>
+                                              <input type="text" class="form-control" name="url" value='{{ $user->profile->url }}' />
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="quantity">image</label>
+                                              <div class="input-group mb-3">
+                                                    <div class="custom-file">
+                                                    <input type="file" name="image" id="image" value='{{$user->profile->image}}'>
+                                                        @error('image')
+                                                         <strong>{{ $message }}</strong>
+                                                        @enderror
+                                                    </div>
+                                            </div>
+                                         </div>
+                                            {{-- <button type="submit" class="btn btn-primary">Update</button> --}}
+                                </div>
+                            </div>
+
+                        {{-- form end --}}
+                        <p class="uk-text-right">
+                            <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                            <button class="uk-button uk-button-primary" type="submit">Edit</button>
+                        </p>
+                    </form>
+                    </div>
+                </div>
+            {{-- modal end --}}
             @endcan
 
 
@@ -125,73 +175,79 @@
             </button> --}}
 
             <!-- Modal followers -->
-            <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                            <div class="modal-header">
-                                    <h5 class="modal-title">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                </div>
-                        <div class="modal-body">
-                            <div class="container-fluid">
-                               @foreach ($followers as $followers)
-                                <p>{{ $followers->username }}</p>
-                               @endforeach
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save</button>
-                        </div>
+
+
+            <div id="modal-overflow2" uk-modal>
+                <div class="uk-modal-dialog">
+
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Followers</h2>
                     </div>
+
+                    <div class="uk-modal-body" uk-overflow-auto>
+                            <div class="container-fluid">
+                                    @foreach ($followers as $followers)
+                                     <div class="d-flex justify-content-between p-3">
+                                        <div class=" d-flex align-items-center">
+                                       <img class="rounded-circle" style="width:40px" src="/storage/{{$followers->profile->profileImage()}}" alt="">
+                                       <a href="/profile/{{$followers->id}}">{{ $followers->username }}</a>
+                                        </div>
+                                        <div>
+                                           <follow-button class="ml-4" user-id="{{$followers->id}}" follows="{{$follows}}"></follow-button>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                 </div>
+                    </div>
+
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                        {{-- <button class="uk-button uk-button-primary" type="button">Save</button> --}}
+                    </div>
+
                 </div>
             </div>
-
-            <script>
-                $('#exampleModal').on('show.bs.modal', event => {
-                    var button = $(event.relatedTarget);
-                    var modal = $(this);
-                    // Use above variables to manipulate the DOM
-
-                });
-            </script>
             {{-- end modal --}}
 
             <!-- Modal following -->
-            <div class="modal fade" id="modelId2" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                            <div class="modal-header">
-                                    <h5 class="modal-title">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                </div>
-                        <div class="modal-body">
-                            <div class="container-fluid">
-                               @foreach ($following as $following)
-                                <p>{{ $following->user->username }}</p>
-                               @endforeach
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save</button>
-                        </div>
+
+            {{-- <a class="uk-button uk-button-default" href="#modal-overflow" uk-toggle>Open</a> --}}
+
+            <div id="modal-overflow" uk-modal>
+                <div class="uk-modal-dialog">
+
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+
+                    <div class="uk-modal-header">
+                        <h2 class="uk-modal-title">Following</h2>
                     </div>
+
+                    <div class="uk-modal-body" uk-overflow-auto>
+
+                            <div class="container-fluid">
+                                    @foreach ($following as $following)
+                                     <div class="d-flex justify-content-between p-3">
+                                         <div class=" d-flex align-items-center">
+                                        <img class="rounded-circle" style="width:40px" src="/storage/{{$following->profileImage()}}" alt="">
+                                        <a href="/profile/{{$following->user->id}}">{{ $following->user->username }}</a>
+                                         </div>
+                                         <div>
+                                            <follow-button class="ml-4" user-id="{{$following->user->id}}" follows="{{$follows}}"></follow-button>
+                                         </div>
+                                     </div>
+                                    @endforeach
+                                 </div>
+                    </div>
+
+                    <div class="uk-modal-footer uk-text-right">
+                        <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+                        {{-- <button class="uk-button uk-button-primary" type="button">Save</button> --}}
+                    </div>
+
                 </div>
             </div>
-
-            <script>
-                $('#exampleModal').on('show.bs.modal', event => {
-                    var button = $(event.relatedTarget);
-                    var modal = $(this);
-                    // Use above variables to manipulate the DOM
-
-                });
-            </script>
             {{-- end modal --}}
 
 
@@ -199,15 +255,15 @@
                 <div class="pr-4"><strong>{{ $postcount }}</strong> posts</div>
             {{-- modal button --}}
 
-            <a  data-toggle="modal" data-target="#modelId">
-            <div class="pr-4"><strong>{{$followerscount}}</strong> followers</div>
+            <a   href="#modal-overflow2" uk-toggle>
+            <div class="pr-4 text-dark"><strong>{{$followerscount}}</strong> followers</div>
             </a>
            {{-- end --}}
 
             {{-- modal button --}}
 
-            <a  data-toggle="modal" data-target="#modelId2">
-             <div class="pr-4"><strong>{{$followingcount}}</strong> following</div>
+            <a  href="#modal-overflow" uk-toggle>
+             <div class="pr-4 text-dark"><strong>{{$followingcount}}</strong> following</div>
             </a>
            {{-- end --}}
 
@@ -225,7 +281,7 @@
             <div class="col-4 pt-5 uk-animation-toggle" tabindex="0">
 
                 <a href="/p/{{$post->id}}">
-                <img class="w-100 uk-animation-scale-down " src="/storage/{{$post->image}}" alt="">
+                <img class="w-100 uk-animation-fade " src="/storage/{{$post->image}}" alt="">
                 </a>
 
             </div>
