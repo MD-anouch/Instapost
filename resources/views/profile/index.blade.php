@@ -233,9 +233,9 @@
                                         <img class="rounded-circle" style="width:40px" src="/storage/{{$following->profileImage()}}" alt="">
                                         <a href="/profile/{{$following->user->id}}">{{ $following->user->username }}</a>
                                          </div>
-                                         <div>
+                                         {{-- <div>
                                             <follow-button class="ml-4" user-id="{{$following->user->id}}" follows="{{$follows}}"></follow-button>
-                                         </div>
+                                         </div> --}}
                                      </div>
                                     @endforeach
                                  </div>

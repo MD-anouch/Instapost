@@ -8,6 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'InstaClone') }}</title>
+      <!-- add icon link -->
+      <link rel = "icon" href =
+      "https://freepngimg.com/thumb/instagram/62705-logo-sticker-computer-instagram-icons-download-hd-png-thumb.png"
+              type = "image/x-icon">
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -35,6 +39,7 @@
         <script src={{asset('js/uikit-icons.min.js')}}></script>
 {{-- uuuuuuuuuuuuuuuuiiiiiiiiiiiiiiikkkkkkkkkkkiiiiiiiiiittttt --}}
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/my.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">

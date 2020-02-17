@@ -41,6 +41,7 @@ Route::resource('/comment','CommentController');
 Route::post('followers/{user}', 'FollowsController@store');
 // Route::post('/search','ProfileController@search')->name('search.store');
 Route::get('/search','ProfileController@search')->name('search.store');
+Route::post('like', 'PostController@likePost')->name('like');
 
 
 // Route::get('/profile/{user}', 'ProfileController@show')->name('profile.show');

@@ -19,13 +19,30 @@
             <p class=" pt-2"><span class="font-weight-bold"><a href="/profile/{{$post->user->id}}"><span class="text-dark">{{ $post->user->username }}</span></a></span> {{ $post->caption }}</p>
             </div>
             </section>
+
             {{-- like --}}
-            <div class=" d-flex">
-                <a class="like" href="#">like </a> | <a class="like" href="#"> dislike</a>
-            </div>
+            {{-- <div class=" d-flex"> --}}
+            {{-- <input type="hidden" name="post_id" value="{{$post->id}}"> --}}
+            {{-- <a class="like" data-id="{{$post->id}}" href="#">{{Auth::user()->likes()->where('post_id',$post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 1 ? 'you like this post' : 'like' : 'like'}} </a> |
+                <a class="like" href="#">{{Auth::user()->likes()->where('post_id',$post->id)->first() ? Auth::user()->likes()->where('post_id', $post->id)->first()->like == 0 ? 'you dislike like this post' : 'dislike' :  'dislike'}} </a>
+            </div> --}}
+
+            {{-- les commentaire --}}
+            {{-- @foreach ($post->comments as $comments)
+            <article class="uk-comment">
+                <header class="uk-comment-header">
+                    <img class="uk-comment-avatar" src="" alt="">
+                <h4 class="uk-comment-title"></h4>
+                    <ul class="uk-comment-meta uk-subnav">{{$comments->comment}}</ul>
+                </header>
+                <div class="uk-comment-body"></div>
+            </article>
+            @endforeach --}}
             {{-- end --}}
+
         </div>
 @endforeach
+
 </div>
 
     <div class="col-4 mt-4">
@@ -51,9 +68,13 @@
             </div>
     </div>
 
-<script src="{{asset('/js/like.js')}}"></script>
 </div>
+<script type="module" src="{{asset('/js/like.js')}}"></script>
 
+<script type="application/javascript" >
+var token = '{{ Session::token() }}';
+var urlike = '{{route('like')}}'
+</script>
 
 
 

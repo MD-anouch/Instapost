@@ -1,0 +1,20 @@
+.not-found{
+    color: red;
+    text-decoration: none;
+    transition: 1s ease-out;
+    font-family: monospace;
+    /* text-align: center; */
+    /* padding-top: 50px; */
+    /* font-size: 5em; */
+}
+.not-found:hover{
+    color: rgb(31, 199, 31);
+    font-size:1.2em;
+}
+.img{
+    /* display: flex;
+    justify-content: center; */
+    text-align: center;
+
+}
+

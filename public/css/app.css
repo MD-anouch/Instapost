@@ -11100,3 +11100,6 @@ a.text-dark:focus {
   }
 }
 
+#not-found{
+    color: red !important;
+}

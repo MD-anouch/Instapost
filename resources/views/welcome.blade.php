@@ -1,11 +1,35 @@
+@if (Auth::user())
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/my.css">
+    <title>Note Found</title>
+</head>
+<body>
 
+    <div class="img" >
+        <img src="https://miro.medium.com/max/1600/1*viqIrYzAw_SbAb8TqShNIA.png" alt="">
+           {{-- <h1 class="not-found"> Page not Found <br>404</h1> --}}
+           <a class="not-found" href="/p"><h1 >Return to the home page</h1></a>
+    </div>
+</body>
+</html>
+
+@else
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Instapost</title>
+         <!-- add icon link -->
+         <link rel = "icon" href =
+         "https://freepngimg.com/thumb/instagram/62705-logo-sticker-computer-instagram-icons-download-hd-png-thumb.png"
+                 type = "image/x-icon">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -62,6 +86,9 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            .insta-logo{
+                width: 150px;
+            }
         </style>
     </head>
     <body>
@@ -81,21 +108,15 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Mouad code
+                <div class="title m-b-md text-uppercase">
+                    <img src="https://pngimage.net/wp-content/uploads/2018/06/instagram-transparent-logo-png-1.png" class="insta-logo" alt="Page loading">
+                    <br>
+                    Welcome To Instapost
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+
             </div>
         </div>
     </body>
 </html>
+@endif

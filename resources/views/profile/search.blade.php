@@ -6,7 +6,7 @@
 
 <div class="card" style="width: 18rem;">
         <div class="card-header">
-          Featured
+          Results
         </div>
         <ul class="list-group list-group-flush">
 
@@ -19,7 +19,7 @@
             </div>
                @endforeach
             @else
-                No user found
+               <h1 style="text-align:center">No user found</h1>
             @endif
 
 

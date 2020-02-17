@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\Like;
 use Illuminate\Http\Request;
 use App\Post;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
 
@@ -14,6 +17,42 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function likePost(Request $request){
+
+        $post_id = $request->postId;
+        // $post_id = 18;
+        $is_like =  $request['islike'] === true;
+        $update = false ;
+        $post = Post::Find($post_id);
+        if (!$post) {
+            return null;
+        }
+        $user  = auth()->user();
+        $like = $user->likes()->where('post_id', $post_id)->first();
+        if ($like) {
+            $already_like = $like->like;
+            $update = true;
+            if ($already_like == $is_like) {
+                $like->delete();
+                return null;
+            }
+        }
+        else {
+            $like = new like();
+        }
+        $like->like = $is_like;
+        $like->user_id = $user->id;
+        // $like->post_id = $post;
+        $like->post_id = $post_id;
+        if ($update) {
+            $like->update();
+        }
+        else {
+            $like->save();
+        }
+        return null;
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +65,7 @@ class PostController extends Controller
         $post = Post::all()->sortBy('created_at');
         $users = auth()->user()->following()->pluck('profiles.user_id');
         $posts = Post::whereIn('user_id', $users)->with('user')->latest()->paginate(5);
+        // $posts2 = Post::whereIn('user_id', $users)->with('user');
         // $follows= (auth()->user()) ? auth()->user()->following->contains($post->user->id) : false;
 
         // dd($posts);
