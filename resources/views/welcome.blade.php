@@ -33,6 +33,16 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+           {{-- uuuuuuuuuuuuuuuuiiiiiiiiiiiiiiikkkkkkkkkkkiiiiiiiiiittttt --}}
+           <link rel="stylesheet" href={{asset('css/uikit-rtl.min.css')}}>
+           <link rel="stylesheet" href={{asset('css/uikit-rtl.css')}}>
+           <link rel="stylesheet" href={{asset('css/uikit.min.css')}}>
+           <link rel="stylesheet" href={{asset('css/uikit.css')}}>
+           <script src={{asset('js/uikit.js')}}></script>
+           <script src={{asset('js/uikit.min.js')}}></script>
+           <script src={{asset('js/uikit-icons.js')}}></script>
+           <script src={{asset('js/uikit-icons.min.js')}}></script>
+   {{-- uuuuuuuuuuuuuuuuiiiiiiiiiiiiiiikkkkkkkkkkkiiiiiiiiiittttt --}}
 
         <!-- Styles -->
         <style>
@@ -87,8 +97,56 @@
                 margin-bottom: 30px;
             }
             .insta-logo{
-                width: 150px;
+                width: 100px;
+                /* animation-name: zoom; */
+                /* animation-duration: 4s; */
+                /* the animation repetion */
+                /* animation-iteration-count: infinite;
+                /* the animation go back and forward  */
+                /* animation-direction: alternate;  */
+
+                /* maintain the last style value */
+                /* animation-fill-mode: forwards; */
+
+                /* animation: zoom 4s infinite alternate ; */
+                animation: zoom 4s forwards ;
+
             }
+            @keyframes zoom {
+                /* from {width: 100px;} */
+                100% {width: 200px;}
+                0%{transform: rotate(-1800deg);}
+
+            }
+            .insta-logo:hover{
+                animation: zoom 4s infinite alternate-reverse  ;
+            }
+
+            /* text animation */
+            .text-anime {
+                position: relative;
+                font-family: sans-serif;
+                text-transform: uppercase;
+                font-size: 1em;
+                letter-spacing: 4px;
+                overflow: hidden;
+                background: linear-gradient(90deg, red, #f4fb3f, #fd6df3 );
+                background-repeat: no-repeat;
+                background-size: 80%;
+                animation: animate 3s linear infinite;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: rgba(255, 255, 255, 0);
+            }
+
+            @keyframes animate {
+            0% {
+                background-position: -500%;
+            }
+            100% {
+                background-position: 500%;
+            }
+            }
+            /* end */
         </style>
     </head>
     <body>
@@ -109,9 +167,14 @@
 
             <div class="content">
                 <div class="title m-b-md text-uppercase">
-                    <img src="https://pngimage.net/wp-content/uploads/2018/06/instagram-transparent-logo-png-1.png" class="insta-logo" alt="Page loading">
-                    <br>
-                    Welcome To Instapost
+                    {{-- <div class="uk-animation-toggle" tabindex="0"> --}}
+                        {{-- <div class="uk-animation-kenburns"> --}}
+                            <img src="https://cdn.icon-icons.com/icons2/1826/PNG/512/4202090instagramlogosocialsocialmedia-115598_115703.png" class="insta-logo" alt="Page loading">
+                        {{-- </div> --}}
+                    {{-- </div> --}}
+                    <div class="text-anime">
+                        Welcome To Instapost
+                    </div>
                 </div>
 
 
